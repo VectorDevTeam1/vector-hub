@@ -207,7 +207,7 @@ local IsCurrentlyLoading = false
 local LastLoadTime = 0
 local IsEquippingLoadout = false
 local AutoPremiumRunning = false
-local PremiumLoaded = false
+local PremiumLoaded = true -- Lifetime Free: всегда активен
 
 local MaxPathDistance = 300 -- default
 local MilMarker = nil
