@@ -1086,18 +1086,6 @@ function TDS:Addons(SkipGameState)
     return true
 end
 
-    pcall(func)
-
-    while self.Place == originalPlace do
-        task.wait(0.1)
-    end
-
-    PremiumLoaded = true
-    IsCurrentlyLoading = false
-    LastLoadTime = os.clock()
-    return true
-end
-
 local function GetEquippedTowers()
     local towers = {}
     local StateReplicators = ReplicatedStorage:FindFirstChild("StateReplicators")
