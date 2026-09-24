@@ -506,6 +506,11 @@ LoadSettings()
 Globals.TimeScaleValue = CoerceTimeScaleValue(Globals.TimeScaleValue, 2)
 Apply3dRendering()
 
+-- // === LIFETIME FREE ==========================================
+-- Premium отключён навсегда. Всё бесплатно.
+getgenv().IsPremium = true
+getgenv().IsLifetime = true
+
 -- // === STRATEGY FILE ==========================================
 
 local function GetStratFile()
