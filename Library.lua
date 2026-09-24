@@ -2461,14 +2461,7 @@ local Interactive = Window:Tab({Title = "Interactive", Icon = "mouse-pointer-cli
 
     Interactive:Section({Title = "Premium"})
 
-    Interactive:Toggle({
-        Title = "Auto Load Premium (In-Game)",
-        Desc = "Automatically loads the key system when you join a match.",
-        Value = Globals.AutoPremium,
-        Callback = function(v)
-            SetSetting("AutoPremium", v)
-        end
-    })
+        -- Auto Load Premium — удалено (Lifetime Free)
 
     Interactive:Button({
         Title = "Unlock Premium Features",
