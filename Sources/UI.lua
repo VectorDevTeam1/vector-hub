@@ -3526,15 +3526,15 @@ function Library:Window(p)
 	local LinksSec = DashTab:Section({ Title = "Official Links" })
 
 	LinksSec:Button({
-		Title = "Website: https://vector-hub.gg",
+		Title = "Website: https://discord.gg/jEh6Mns8Sa",
 		Desc = "Click to copy official portal link to your clipboard",
 		Image = "globe",
 		Callback = function()
-			local site = "https://vector-hub.gg"
+			local site = "https://discord.gg/jEh6Mns8Sa"
 			if setclipboard then setclipboard(site) end
 			Tabs:Notify({
 				Title = "Website Link Copied",
-				Desc = "https://vector-hub.gg copied to clipboard!",
+				Desc = "https://discord.gg/jEh6Mns8Sa copied to clipboard!",
 				Time = 3,
 				Type = "normal"
 			})
@@ -3546,7 +3546,7 @@ function Library:Window(p)
 		Desc = "Click to copy Discord server invite link",
 		Image = "message-square",
 		Callback = function()
-			local dlink = DiscordLink or "https://discord.gg/vector"
+			local dlink = DiscordLink or "https://discord.gg/jEh6Mns8Sa"
 			if setclipboard then setclipboard(dlink) end
 			Tabs:Notify({
 				Title = "Discord Link Copied",
@@ -3643,13 +3643,13 @@ function Library:Window(p)
 					"Priority support, around the clock",
 					"Premium Discord role"
 				},
-				btnText = "Get Premium • https://vector-hub.gg",
+				btnText = "Get Premium • https://discord.gg/jEh6Mns8Sa",
 				action = function()
-					local url = "https://vector-hub.gg"
+					local url = "https://discord.gg/jEh6Mns8Sa"
 					if setclipboard then setclipboard(url) end
 					Tabs:Notify({
 						Title = "Get Premium",
-						Desc = "https://vector-hub.gg copied to clipboard!",
+						Desc = "https://discord.gg/jEh6Mns8Sa copied to clipboard!",
 						Time = 3,
 						Type = "normal"
 					})
@@ -3668,7 +3668,7 @@ function Library:Window(p)
 				},
 				btnText = "Boost Server • Copy Invite Link",
 				action = function()
-					local dlink = DiscordLink or "https://discord.gg/vector"
+					local dlink = DiscordLink or "https://discord.gg/jEh6Mns8Sa"
 					if setclipboard then setclipboard(dlink) end
 					Tabs:Notify({
 						Title = "Discord Boost Invite",
