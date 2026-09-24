@@ -1081,37 +1081,10 @@ local function MissionsUIFix()
 end
 
 function TDS:Addons(SkipGameState)
-    if GameState == "LOBBY" and not SkipGameState then
-        return false
-    end
-
-    if PremiumLoaded then
-        return true
-    end
-
-    while IsCurrentlyLoading or IsEquippingLoadout or (TDS and TDS.LoadoutPending) or (os.clock() - LastLoadTime < 5) do
-        task.wait(0.2)
-    end
-
-    local originalPlace = self.Place
-    IsCurrentlyLoading = true
-
-    local url = "https://api.jnkie.com/api/v1/luascripts/public/57fe397f76043ce06afad24f07528c9f93e97730930242f57134d0b60a2d250b/download"
-    local success, code
-
-    repeat
-        success, code = pcall(game.HttpGet, game, url)
-        if not success or not code then
-            task.wait(1)
-        end
-    until success and code
-
-    local func = loadstring(code)
-    if not func then
-        IsCurrentlyLoading = false
-        LastLoadTime = os.clock()
-        return false
-    end
+    -- Premium отключён навсегда. Key-system не загружается.
+    -- Все функции доступны бесплатно с пожизненной гарантией.
+    return true
+end
 
     pcall(func)
 
