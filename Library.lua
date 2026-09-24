@@ -206,7 +206,7 @@ local GatlifyExecuted = false
 local IsCurrentlyLoading = false
 local LastLoadTime = 0
 local IsEquippingLoadout = false
-local AutoPremiumRunning = false
+-- AutoPremiumRunning — удалено (Lifetime Free)
 local PremiumLoaded = true -- Lifetime Free: всегда активен
 
 local MaxPathDistance = 300 -- default
@@ -2896,7 +2896,6 @@ local Progression = Window:Tab({Title = "Progression", Icon = "settings"}) do
                 SetSetting("AutoRestart", false)
                 SetSetting("AutoReady", false)
                 SetSetting("AutoSkip", false)
-                SetSetting("AutoPremium", false)
 
                 local success = TDS:Addons(true)
 
@@ -4749,25 +4748,7 @@ local function StartGatlify()
     end)
 end
 
-local function StartAutoPremium()
-    if AutoPremiumRunning or not Globals.AutoPremium or PremiumLoaded then return end
-    AutoPremiumRunning = true
-
-    task.spawn(function()
-        if GameState == "GAME" then
-            repeat task.wait(0.5) until not IsCurrentlyLoading and not IsEquippingLoadout and not (TDS and TDS.LoadoutPending) and (os.clock() - LastLoadTime >= 5)
-            if not Globals.AutoPremium or PremiumLoaded then
-                AutoPremiumRunning = false
-                return
-            end
-
-            Window:Notify({
-                Title = "ADS",
-                Desc = "Loading Key System...",
-                Time = 3,
-                Type = "normal"
-            })
-
+-- StartAutoPremium — удалено (Lifetime Free)
 -- StartAutoPremium — удалено (Lifetime Free)
 
 local function StartAutoPickups()
