@@ -4380,22 +4380,10 @@ end
 
 function TDS:Place(TName, px, py, pz, ...)
     local args = {...}
-    local isStacking = args[#args] == "stack" or args[#args] == true
+    -- Stack Tower — LIFETIME FREE, проверка Premium убрана
 
-    if isStacking and not PremiumLoaded and GameState == "GAME" then
-        Window:Notify({
-            Title = "ADS",
-            Desc = "Stacking requires Premium. Automatically loading key system...",
-            Time = 3,
-            Type = "normal"
-        })
-
-        self:Addons()
-        return self:Place(TName, px, py, pz, unpack(args))
-    end
-
-    if GameState ~= "GAME" then
-        return false
+    if GetGameState() ~= "GAME" then
+        WaitForState("GAME", 90)
     end
 
     local existing = {}
