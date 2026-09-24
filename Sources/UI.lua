@@ -1485,19 +1485,19 @@ function Library:Window(p)
 	UsernameLabel.TextTruncate = Enum.TextTruncate.AtEnd
 	UsernameLabel.LayoutOrder = 1
 
-	local isPremium = (type(getgenv().IsPremium) ~= 'nil' and getgenv().IsPremium)
+	local isPremium = true -- Lifetime Free
 
 	TypeBadge.Name = "TypeBadge"
 	TypeBadge.Parent = InfoFrame
-	TypeBadge.BackgroundColor3 = isLight and (isPremium and Color3.fromRGB(220, 235, 255) or Color3.fromRGB(226, 230, 240)) or (isPremium and Color3.fromRGB(18, 30, 55) or Color3.fromRGB(26, 26, 36))
+	TypeBadge.BackgroundColor3 = isLight and Color3.fromRGB(220, 235, 255) or Color3.fromRGB(18, 30, 55)
 	TypeBadge.BorderSizePixel = 0
-	TypeBadge.Size = UDim2.new(0, isPremium and 56 or 42, 0, 14)
+	TypeBadge.Size = UDim2.new(0, 62, 0, 14)
 	TypeBadge.LayoutOrder = 2
 
 	TypeBadgeCorner.CornerRadius = UDim.new(0, 3)
 	TypeBadgeCorner.Parent = TypeBadge
 
-	TypeBadgeStroke.Color = isLight and (isPremium and Color3.fromRGB(90, 160, 255) or Color3.fromRGB(195, 200, 215)) or (isPremium and Color3.fromRGB(42, 110, 230) or Color3.fromRGB(55, 55, 75))
+	TypeBadgeStroke.Color = isLight and Color3.fromRGB(90, 160, 255) or Color3.fromRGB(42, 110, 230)
 	TypeBadgeStroke.Thickness = 1
 	TypeBadgeStroke.Parent = TypeBadge
 
@@ -1507,8 +1507,8 @@ function Library:Window(p)
 	TypeLabel.Size = UDim2.new(1, 0, 1, 0)
 	TypeLabel.Font = Enum.Font.GothamBold
 	TypeLabel.TextSize = 9
-	TypeLabel.Text = isPremium and "PREMIUM" or "FREE"
-	TypeLabel.TextColor3 = isLight and (isPremium and Color3.fromRGB(30, 90, 200) or Color3.fromRGB(75, 80, 95)) or (isPremium and Color3.fromRGB(90, 160, 255) or Color3.fromRGB(170, 170, 190))
+	TypeLabel.Text = "LIFETIME"
+	TypeLabel.TextColor3 = isLight and Color3.fromRGB(30, 90, 200) or Color3.fromRGB(90, 160, 255)
 	TypeLabel.TextXAlignment = Enum.TextXAlignment.Center
 	TypeLabel.TextYAlignment = Enum.TextYAlignment.Center
 
@@ -1665,9 +1665,9 @@ function Library:Window(p)
 		tw({v = AccountStroke, t = 0.25, g = {Color = isLight and Color3.fromRGB(215, 219, 232) or Color3.fromRGB(38, 38, 50)}}):Play()
 		tw({v = UsernameLabel, t = 0.25, g = {TextColor3 = isLight and Color3.fromRGB(20, 24, 33) or Color3.fromRGB(255, 255, 255)}}):Play()
 		tw({v = AvatarFrame, t = 0.25, g = {BackgroundColor3 = isLight and Color3.fromRGB(220, 224, 235) or Color3.fromRGB(26, 26, 34)}}):Play()
-		tw({v = TypeBadge, t = 0.25, g = {BackgroundColor3 = isLight and (isPremium and Color3.fromRGB(220, 235, 255) or Color3.fromRGB(226, 230, 240)) or (isPremium and Color3.fromRGB(18, 30, 55) or Color3.fromRGB(26, 26, 36))}}):Play()
-		tw({v = TypeBadgeStroke, t = 0.25, g = {Color = isLight and (isPremium and Color3.fromRGB(90, 160, 255) or Color3.fromRGB(195, 200, 215)) or (isPremium and Color3.fromRGB(42, 110, 230) or Color3.fromRGB(55, 55, 75))}}):Play()
-		tw({v = TypeLabel, t = 0.25, g = {TextColor3 = isLight and (isPremium and Color3.fromRGB(30, 90, 200) or Color3.fromRGB(75, 80, 95)) or (isPremium and Color3.fromRGB(90, 160, 255) or Color3.fromRGB(170, 170, 190))}}):Play()
+		tw({v = TypeBadge, t = 0.25, g = {BackgroundColor3 = isLight and Color3.fromRGB(220, 235, 255) or Color3.fromRGB(18, 30, 55)}}):Play()
+		tw({v = TypeBadgeStroke, t = 0.25, g = {Color = isLight and Color3.fromRGB(90, 160, 255) or Color3.fromRGB(42, 110, 230)}}):Play()
+		tw({v = TypeLabel, t = 0.25, g = {TextColor3 = isLight and Color3.fromRGB(30, 90, 200) or Color3.fromRGB(90, 160, 255)}}):Play()
 
 		if Tabs and Tabs.List then
 			for _, item in ipairs(Tabs.List) do
@@ -2319,7 +2319,7 @@ function Library:Window(p)
 
 			table.insert(currentWindowTheme.controls, {
 				type = "slider",
-				Track = SliderTrack,
+					Track = SliderTrack,
 				ValueBox = ValueBox,
 				Stroke = ValueBoxStroke,
 			})
@@ -3347,7 +3347,7 @@ function Library:Window(p)
 	end
 
 	DiscordBtn.MouseButton1Click:Connect(function()
-		local dlink = DiscordLink or "https://discord.gg/vector"
+		local dlink = DiscordLink or "https://discord.gg/jEh6Mns8Sa"
 		if setclipboard then setclipboard(dlink) end
 		Tabs:Notify({
 			Title = "Discord Link",
@@ -3503,7 +3503,7 @@ function Library:Window(p)
 
 	local playerName = (game.Players.LocalPlayer and game.Players.LocalPlayer.Name) or "Player"
 	local playerUserId = (game.Players.LocalPlayer and game.Players.LocalPlayer.UserId) or 0
-	local keyType = (type(getgenv().IsPremium) ~= 'nil' and getgenv().IsPremium) and "Premium Key" or "Free Key"
+	local keyType = "Lifetime License"
 
 	OverviewSec:Label({
 		Title = "User: " .. playerName .. " (ID: " .. tostring(playerUserId) .. ")",
@@ -3526,25 +3526,9 @@ function Library:Window(p)
 	local LinksSec = DashTab:Section({ Title = "Official Links" })
 
 	LinksSec:Button({
-		Title = "Website: https://discord.gg/jEh6Mns8Sa",
-		Desc = "Click to copy official portal link to your clipboard",
-		Image = "globe",
-		Callback = function()
-			local site = "https://discord.gg/jEh6Mns8Sa"
-			if setclipboard then setclipboard(site) end
-			Tabs:Notify({
-				Title = "Website Link Copied",
-				Desc = "https://discord.gg/jEh6Mns8Sa copied to clipboard!",
-				Time = 3,
-				Type = "normal"
-			})
-		end
-	})
-
-	LinksSec:Button({
 		Title = "Community Discord",
-		Desc = "Click to copy Discord server invite link",
-		Image = "message-square",
+		Desc = "Click to copy Discord invite link",
+		Image = "globe",
 		Callback = function()
 			local dlink = DiscordLink or "https://discord.gg/jEh6Mns8Sa"
 			if setclipboard then setclipboard(dlink) end
@@ -3557,372 +3541,41 @@ function Library:Window(p)
 		end
 	})
 
-	local TiersSec = DashTab:Section({ Title = "License Keys" })
-	local tiersContainer = TiersSec:GetContainer()
-
-	do
-		local isLight = currentWindowTheme.isLightMode
-
-		local Card = Instance.new("Frame")
-		local CardCorner = Instance.new("UICorner")
-		local CardStroke = Instance.new("UIStroke")
-		local CardPadding = Instance.new("UIPadding")
-
-		Card.Name = "TierComparisonCard"
-		Card.Parent = tiersContainer
-		Card.BackgroundColor3 = isLight and Color3.fromRGB(246, 248, 252) or Color3.fromRGB(22, 22, 28)
-		Card.BorderSizePixel = 0
-		Card.Size = UDim2.new(1, 0, 0, 225)
-		Card.ClipsDescendants = true
-
-		CardCorner.CornerRadius = UDim.new(0, 6)
-		CardCorner.Parent = Card
-
-		CardStroke.Color = isLight and Color3.fromRGB(228, 232, 242) or Color3.fromRGB(36, 36, 44)
-		CardStroke.Thickness = 1
-		CardStroke.Parent = Card
-
-		CardPadding.Parent = Card
-		CardPadding.PaddingTop = UDim.new(0, 10)
-		CardPadding.PaddingBottom = UDim.new(0, 10)
-		CardPadding.PaddingLeft = UDim.new(0, 12)
-		CardPadding.PaddingRight = UDim.new(0, 12)
-
-		local SwitcherBar = Instance.new("Frame")
-		local SwitcherCorner = Instance.new("UICorner")
-		local SwitcherStroke = Instance.new("UIStroke")
-		local SwitcherLayout = Instance.new("UIListLayout")
-
-		SwitcherBar.Name = "SwitcherBar"
-		SwitcherBar.Parent = Card
-		SwitcherBar.BackgroundColor3 = isLight and Color3.fromRGB(235, 238, 246) or Color3.fromRGB(16, 16, 21)
-		SwitcherBar.BorderSizePixel = 0
-		SwitcherBar.Position = UDim2.new(0, 0, 0, 0)
-		SwitcherBar.Size = UDim2.new(1, 0, 0, 30)
-
-		SwitcherCorner.CornerRadius = UDim.new(0, 5)
-		SwitcherCorner.Parent = SwitcherBar
-
-		SwitcherStroke.Color = isLight and Color3.fromRGB(218, 222, 234) or Color3.fromRGB(34, 34, 42)
-		SwitcherStroke.Thickness = 1
-		SwitcherStroke.Parent = SwitcherBar
-
-		SwitcherLayout.Parent = SwitcherBar
-		SwitcherLayout.FillDirection = Enum.FillDirection.Horizontal
-		SwitcherLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-		local tierData = {
-			{
-				id = "free",
-				name = "Free Key",
-				tabLabel = "Free ($0)",
-				badge = "$0 forever",
-				perks = {
-					"Access to free scripts",
-					"Standard community support",
-					"Keysystem access"
-				},
-				btnText = "Current Default Tier (Keysystem)",
-				action = function()
-					Tabs:Notify({
-						Title = "Free Tier Active",
-						Desc = "Keysystem access is active for your session.",
-						Time = 3,
-						Type = "normal"
-					})
-				end
-			},
-			{
-				id = "premium",
-				name = "Premium Key",
-				tabLabel = "Premium",
-				badge = "one-time access",
-				perks = {
-					"Every current and future script",
-					"No keysystem required",
-					"Priority support, around the clock",
-					"Premium Discord role"
-				},
-				btnText = "Get Premium • https://discord.gg/jEh6Mns8Sa",
-				action = function()
-					local url = "https://discord.gg/jEh6Mns8Sa"
-					if setclipboard then setclipboard(url) end
-					Tabs:Notify({
-						Title = "Get Premium",
-						Desc = "https://discord.gg/jEh6Mns8Sa copied to clipboard!",
-						Time = 3,
-						Type = "normal"
-					})
-				end
-			},
-			{
-				id = "booster",
-				name = "Booster Key",
-				tabLabel = "Booster",
-				badge = "until boost runs out",
-				perks = {
-					"Every current and future script",
-					"No keysystem required",
-					"Priority support, around the clock",
-					"Special Discord role"
-				},
-				btnText = "Boost Server • Copy Invite Link",
-				action = function()
-					local dlink = DiscordLink or "https://discord.gg/jEh6Mns8Sa"
-					if setclipboard then setclipboard(dlink) end
-					Tabs:Notify({
-						Title = "Discord Boost Invite",
-						Desc = "Discord invite link copied to clipboard!",
-						Time = 3,
-						Type = "normal"
-					})
-				end
-			}
-		}
-
-		local DetailsFrame = Instance.new("Frame")
-		DetailsFrame.Name = "Details"
-		DetailsFrame.Parent = Card
-		DetailsFrame.BackgroundTransparency = 1
-		DetailsFrame.Position = UDim2.new(0, 0, 0, 38)
-		DetailsFrame.Size = UDim2.new(1, 0, 0, 132)
-
-		local TierTitle = Instance.new("TextLabel")
-		TierTitle.Name = "TierTitle"
-		TierTitle.Parent = DetailsFrame
-		TierTitle.BackgroundTransparency = 1
-		TierTitle.Position = UDim2.new(0, 0, 0, 0)
-		TierTitle.Size = UDim2.new(0.5, 0, 0, 20)
-		TierTitle.Font = Enum.Font.GothamBold
-		TierTitle.Text = "Premium Key"
-		TierTitle.TextColor3 = isLight and Color3.fromRGB(20, 24, 33) or Color3.fromRGB(250, 250, 255)
-		TierTitle.TextSize = 14
-		TierTitle.TextXAlignment = Enum.TextXAlignment.Left
-
-		local PriceBadge = Instance.new("Frame")
-		local PriceCorner = Instance.new("UICorner")
-		local PriceLabel = Instance.new("TextLabel")
-
-		PriceBadge.Name = "PriceBadge"
-		PriceBadge.Parent = DetailsFrame
-		PriceBadge.AnchorPoint = Vector2.new(1, 0)
-		PriceBadge.Position = UDim2.new(1, 0, 0, 0)
-		PriceBadge.Size = UDim2.new(0, 130, 0, 20)
-		PriceBadge.BackgroundColor3 = isLight and Color3.fromRGB(235, 240, 255) or Color3.fromRGB(18, 30, 55)
-		PriceBadge.BorderSizePixel = 0
-
-		PriceCorner.CornerRadius = UDim.new(0, 4)
-		PriceCorner.Parent = PriceBadge
-
-		PriceLabel.Name = "Label"
-		PriceLabel.Parent = PriceBadge
-		PriceLabel.BackgroundTransparency = 1
-		PriceLabel.Size = UDim2.new(1, 0, 1, 0)
-		PriceLabel.Font = Enum.Font.GothamBold
-		PriceLabel.Text = "one-time access"
-		PriceLabel.TextColor3 = Color3.fromRGB(42, 110, 230)
-		PriceLabel.TextSize = 10
-
-		local PerksList = Instance.new("Frame")
-		local PerksLayout = Instance.new("UIListLayout")
-
-		PerksList.Name = "PerksList"
-		PerksList.Parent = DetailsFrame
-		PerksList.BackgroundTransparency = 1
-		PerksList.Position = UDim2.new(0, 0, 0, 26)
-		PerksList.Size = UDim2.new(1, 0, 0, 100)
-
-		PerksLayout.Parent = PerksList
-		PerksLayout.SortOrder = Enum.SortOrder.LayoutOrder
-		PerksLayout.Padding = UDim.new(0, 4)
-
-		local ActionBtn = Instance.new("TextButton")
-		local ActionCorner = Instance.new("UICorner")
-		local ActionStroke = Instance.new("UIStroke")
-
-		ActionBtn.Name = "ActionBtn"
-		ActionBtn.Parent = Card
-		ActionBtn.AnchorPoint = Vector2.new(0.5, 1)
-		ActionBtn.Position = UDim2.new(0.5, 0, 1, 0)
-		ActionBtn.Size = UDim2.new(1, 0, 0, 28)
-		ActionBtn.BackgroundColor3 = Color3.fromRGB(42, 110, 230)
-		ActionBtn.BorderSizePixel = 0
-		ActionBtn.Font = Enum.Font.GothamBold
-		ActionBtn.Text = "Get Premium • https://vector-hub.gg"
-		ActionBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-		ActionBtn.TextSize = 11
-		ActionBtn.AutoButtonColor = false
-
-		ActionCorner.CornerRadius = UDim.new(0, 4)
-		ActionCorner.Parent = ActionBtn
-
-		ActionStroke.Color = Color3.fromRGB(75, 145, 245)
-		ActionStroke.Thickness = 1
-		ActionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-		ActionStroke.Parent = ActionBtn
-
-		local perkLabels = {}
-		for i = 1, 4 do
-			local row = Instance.new("Frame")
-			row.Name = "PerkRow_" .. i
-			row.Parent = PerksList
-			row.BackgroundTransparency = 1
-			row.Size = UDim2.new(1, 0, 0, 18)
-			row.LayoutOrder = i
-
-			local checkIcon = Instance.new("ImageLabel")
-			checkIcon.Name = "Check"
-			checkIcon.Parent = row
-			checkIcon.AnchorPoint = Vector2.new(0, 0.5)
-			checkIcon.BackgroundTransparency = 1
-			checkIcon.Position = UDim2.new(0, 0, 0.5, 0)
-			checkIcon.Size = UDim2.new(0, 14, 0, 14)
-			local chk = gl("check")
-			checkIcon.Image = chk.Image
-			checkIcon.ImageRectSize = chk.ImageRectSize
-			checkIcon.ImageRectOffset = chk.ImageRectPosition
-			checkIcon.ImageColor3 = Color3.fromRGB(46, 204, 113)
-
-			local textLbl = Instance.new("TextLabel")
-			textLbl.Name = "Text"
-			textLbl.Parent = row
-			textLbl.BackgroundTransparency = 1
-			textLbl.Position = UDim2.new(0, 20, 0, 0)
-			textLbl.Size = UDim2.new(1, -20, 1, 0)
-			textLbl.Font = Enum.Font.GothamMedium
-			textLbl.Text = ""
-			textLbl.TextColor3 = isLight and Color3.fromRGB(60, 65, 80) or Color3.fromRGB(195, 195, 210)
-			textLbl.TextSize = 11
-			textLbl.TextXAlignment = Enum.TextXAlignment.Left
-
-			table.insert(perkLabels, { Row = row, Icon = checkIcon, Label = textLbl })
+	LinksSec:Button({
+		Title = "Copy Script Loader",
+		Desc = "Copy the loader string to your clipboard",
+		Image = "message-square",
+		Callback = function()
+			local loader = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/VectorDevTeam1/vector-hub/refs/heads/main/Library.lua"))()'
+			if setclipboard then setclipboard(loader) end
+			Tabs:Notify({
+				Title = "Loader Copied",
+				Desc = "Loader string copied to clipboard!",
+				Time = 3,
+				Type = "normal"
+			})
 		end
+	})
 
-		local currentTierIdx = 2
-		local tabButtons = {}
+	local TiersSec = DashTab:Section({ Title = "License" })
 
-		local function renderTier(idx)
-			currentTierIdx = idx
-			local data = tierData[idx]
-			TierTitle.Text = data.name
-			PriceLabel.Text = data.badge
-			PriceBadge.Size = UDim2.new(0, math.clamp(#data.badge * 6.6 + 18, 90, 230), 0, 20)
-			ActionBtn.Text = data.btnText
+	TiersSec:Label({
+		Title = "Lifetime License: ACTIVE",
+		Desc = "Все функции доступны бесплатно, навсегда. Без key-system.",
+		Image = "check"
+	})
 
-			if idx == 1 then
-				PriceLabel.TextColor3 = Color3.fromRGB(130, 140, 155)
-				PriceBadge.BackgroundColor3 = currentWindowTheme.isLightMode and Color3.fromRGB(230, 233, 240) or Color3.fromRGB(30, 30, 38)
-				ActionBtn.BackgroundColor3 = currentWindowTheme.isLightMode and Color3.fromRGB(225, 228, 238) or Color3.fromRGB(34, 34, 44)
-				ActionBtn.TextColor3 = currentWindowTheme.isLightMode and Color3.fromRGB(50, 55, 70) or Color3.fromRGB(200, 200, 215)
-				ActionStroke.Color = currentWindowTheme.isLightMode and Color3.fromRGB(200, 205, 218) or Color3.fromRGB(45, 45, 56)
-			elseif idx == 2 then
-				PriceLabel.TextColor3 = Color3.fromRGB(42, 110, 230)
-				PriceBadge.BackgroundColor3 = currentWindowTheme.isLightMode and Color3.fromRGB(220, 235, 255) or Color3.fromRGB(18, 30, 55)
-				ActionBtn.BackgroundColor3 = Color3.fromRGB(42, 110, 230)
-				ActionBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-				ActionStroke.Color = Color3.fromRGB(75, 145, 245)
-			else
-				PriceLabel.TextColor3 = Color3.fromRGB(175, 115, 255)
-				PriceBadge.BackgroundColor3 = currentWindowTheme.isLightMode and Color3.fromRGB(245, 235, 255) or Color3.fromRGB(38, 20, 56)
-				ActionBtn.BackgroundColor3 = Color3.fromRGB(140, 75, 235)
-				ActionBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-				ActionStroke.Color = Color3.fromRGB(165, 105, 255)
-			end
+	TiersSec:Label({
+		Title = "Guarantee: LIFETIME",
+		Desc = "Пожизненная гарантия на все обновления и функции.",
+		Image = "shield"
+	})
 
-			for i, pObj in ipairs(perkLabels) do
-				if data.perks[i] then
-					pObj.Row.Visible = true
-					pObj.Label.Text = data.perks[i]
-				else
-					pObj.Row.Visible = false
-				end
-			end
-
-			for i, tb in ipairs(tabButtons) do
-				if i == idx then
-					tw({v = tb.Button, t = 0.15, g = {
-						BackgroundColor3 = (idx == 1 and (currentWindowTheme.isLightMode and Color3.fromRGB(215, 220, 232) or Color3.fromRGB(42, 42, 54))) or (idx == 2 and Color3.fromRGB(42, 110, 230)) or Color3.fromRGB(140, 75, 235),
-						BackgroundTransparency = 0
-					}}):Play()
-					tw({v = tb.Label, t = 0.15, g = {
-						TextColor3 = (idx == 1 and (currentWindowTheme.isLightMode and Color3.fromRGB(20, 25, 35) or Color3.fromRGB(250, 250, 255))) or Color3.fromRGB(255, 255, 255)
-					}}):Play()
-				else
-					tw({v = tb.Button, t = 0.15, g = {
-						BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-						BackgroundTransparency = 1
-					}}):Play()
-					tw({v = tb.Label, t = 0.15, g = {
-						TextColor3 = currentWindowTheme.isLightMode and Color3.fromRGB(110, 115, 130) or Color3.fromRGB(150, 150, 165)
-					}}):Play()
-				end
-			end
-		end
-
-		for i, data in ipairs(tierData) do
-			local btn = Instance.new("TextButton")
-			local bCorner = Instance.new("UICorner")
-			local bLabel = Instance.new("TextLabel")
-
-			btn.Name = "Tab_" .. data.id
-			btn.Parent = SwitcherBar
-			btn.Size = UDim2.new(1 / #tierData, 0, 1, 0)
-			btn.BackgroundTransparency = 1
-			btn.BackgroundColor3 = Color3.fromRGB(42, 110, 230)
-			btn.BorderSizePixel = 0
-			btn.AutoButtonColor = false
-			btn.LayoutOrder = i
-
-			bCorner.CornerRadius = UDim.new(0, 4)
-			bCorner.Parent = btn
-
-			bLabel.Name = "Label"
-			bLabel.Parent = btn
-			bLabel.BackgroundTransparency = 1
-			bLabel.Size = UDim2.new(1, 0, 1, 0)
-			bLabel.Font = Enum.Font.GothamBold
-			bLabel.Text = data.tabLabel
-			bLabel.TextColor3 = isLight and Color3.fromRGB(110, 115, 130) or Color3.fromRGB(150, 150, 165)
-			bLabel.TextSize = 11
-
-			btn.MouseButton1Click:Connect(function()
-				renderTier(i)
-			end)
-
-			table.insert(tabButtons, { Button = btn, Label = bLabel })
-		end
-
-		ActionBtn.MouseButton1Click:Connect(function()
-			local data = tierData[currentTierIdx]
-			if data and data.action then
-				data.action()
-			end
-		end)
-
-		ActionBtn.MouseEnter:Connect(function()
-			tw({v = ActionBtn, t = 0.12, g = {BackgroundTransparency = 0.1}}):Play()
-		end)
-		ActionBtn.MouseLeave:Connect(function()
-			tw({v = ActionBtn, t = 0.12, g = {BackgroundTransparency = 0}}):Play()
-		end)
-
-		renderTier(2)
-
-		table.insert(currentWindowTheme.controls, {
-			type = "custom",
-			update = function(light)
-				Card.BackgroundColor3 = light and Color3.fromRGB(246, 248, 252) or Color3.fromRGB(22, 22, 28)
-				CardStroke.Color = light and Color3.fromRGB(228, 232, 242) or Color3.fromRGB(36, 36, 44)
-				SwitcherBar.BackgroundColor3 = light and Color3.fromRGB(235, 238, 246) or Color3.fromRGB(16, 16, 21)
-				SwitcherStroke.Color = light and Color3.fromRGB(218, 222, 234) or Color3.fromRGB(34, 34, 42)
-				TierTitle.TextColor3 = light and Color3.fromRGB(20, 24, 33) or Color3.fromRGB(250, 250, 255)
-				for _, pObj in ipairs(perkLabels) do
-					pObj.Label.TextColor3 = light and Color3.fromRGB(60, 65, 80) or Color3.fromRGB(195, 195, 210)
-				end
-				renderTier(currentTierIdx)
-			end
-		})
-	end
+	TiersSec:Label({
+		Title = "Support: 24/7 Priority",
+		Desc = "Приоритетная поддержка в Discord.",
+		Image = "message-square"
+	})
 
 	local SystemSec = DashTab:Section({ Title = "System Information" })
 
