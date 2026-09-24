@@ -2883,7 +2883,6 @@ local Progression = Window:Tab({Title = "Progression", Icon = "settings"}) do
         end
     })
 
-   --[[
     Progression:Section({Title = "Account Statistics"})
 
     Progression:Label({Title = "Coins: " .. tostring(game.Players.LocalPlayer.Coins.Value)})
