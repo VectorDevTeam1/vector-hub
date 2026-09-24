@@ -239,7 +239,7 @@ local DefaultSettings = {
     AutoChain = false,
     AutoGatling = false,
     Gatlify = false,
-    AutoPremium = false,
+    -- AutoPremium — удалено (Lifetime Free)
     SupportCaravan = false,
     AutoDJ = false,
     DJCustomSongID = "",
@@ -2459,30 +2459,11 @@ local Interactive = Window:Tab({Title = "Interactive", Icon = "mouse-pointer-cli
         end
     })
 
-    Interactive:Section({Title = "Premium"})
+       -- Section Premium — удалено (Lifetime Free)
 
         -- Auto Load Premium — удалено (Lifetime Free)
 
-    Interactive:Button({
-        Title = "Unlock Premium Features",
-        Desc = "Required Key System to access Premium features",
-        Callback = function()
-            task.spawn(function()
-                Window:Notify({Title = "ADS", Desc = "Loading Key System...", Time = 3})
-
-                local success = TDS:Addons()
-
-                if success then
-                    Window:Notify({
-                        Title = "ADS",
-                        Desc = "Premium Unlocked!",
-                        Time = 5,
-                        Type = "normal"
-                    })
-                end
-            end)
-        end
-    })
+    -- Unlock Premium Features — удалено (Lifetime Free)
 
     Interactive:Section({Title = "Player Statistics"})
 
@@ -4787,24 +4768,7 @@ local function StartAutoPremium()
                 Type = "normal"
             })
 
-            local success = TDS:Addons()
-
-            if success then
-                Window:Notify({
-                    Title = "ADS",
-                    Desc = "Premium Unlocked!",
-                    Time = 3,
-                    Type = "normal"
-                })
-            else
-                task.wait(5)
-                AutoPremiumRunning = false
-            end
-        else
-            AutoPremiumRunning = false
-        end
-    end)
-end
+-- StartAutoPremium — удалено (Lifetime Free)
 
 local function StartAutoPickups()
     if AutoPickupsRunning or not Globals.AutoPickups then return end
@@ -5532,9 +5496,7 @@ task.spawn(function()
             StartGatlify()
         end
 
-        if Globals.AutoPremium and not AutoPremiumRunning then
-            StartAutoPremium()
-        end
+        -- AutoPremium — удалено (Lifetime Free)
 
         if Globals.AutoOpenCrates and not AutoOpenRunning then
             StartAutoOpenCrates()
