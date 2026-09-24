@@ -1807,7 +1807,7 @@ if GameState == "GAME" then
 end
 
 -- // ui
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/DuxiiT/auto-strat/refs/heads/main/Sources/UI.lua"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/VectorDevTeam1/vector-hub/refs/heads/main/Sources/UI.lua"))()
 
 Window = Library:Window({
     Title = "Vector",
