@@ -1862,7 +1862,7 @@ local Automation = Window:Tab({Title = "Automation", Icon = "bot"}) do
             end
             if v and GameState == "GAME" then
                 if #executed_actions > 0 then
-                    local content = "local TDS = shared.TDSTable or loadstring(game:HttpGet(\"https://raw.githubusercontent.com/DuxiiT/auto-strat/refs/heads/main/Library.lua\"))()\n\n"
+                    local content = "local TDS = shared.TDSTable or loadstring(game:HttpGet(\"https://raw.githubusercontent.com/VectorDevTeam1/vector-hub/refs/heads/main/Library.lua\"))()\n\n"
                     content = content .. table.concat(executed_actions, "\n")
                     writefile(GetStratFile(), content)
                 end
@@ -1884,7 +1884,7 @@ local Automation = Window:Tab({Title = "Automation", Icon = "bot"}) do
             end
             if v and GameState == "GAME" then
                 if #executed_actions > 0 then
-                    local content = "local TDS = shared.TDSTable or loadstring(game:HttpGet(\"https://raw.githubusercontent.com/DuxiiT/auto-strat/refs/heads/main/Library.lua\"))()\n\n"
+                    local content = "local TDS = shared.TDSTable or loadstring(game:HttpGet(\"https://raw.githubusercontent.com/VectorDevTeam1/vector-hub/refs/heads/main/Library.lua\"))()\n\n"
                     content = content .. table.concat(executed_actions, "\n")
                     writefile(GetStratFile(), content)
                 end
