@@ -114,7 +114,7 @@ local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local mouse = LocalPlayer:GetMouse()
 local RemoteFunc = ReplicatedStorage:WaitForChild("RemoteFunction")
 local RemoteEvent = ReplicatedStorage:WaitForChild("RemoteEvent")
-local FileName = "ADS_Config.json"
+local FileName = "Vector_Config.json"
 -- // === AUTO-STRAT CONFIG ======================================
 -- Замени на СВОЙ GitHub-репозиторий
 local STRAT_BASE_URL = "https://raw.githubusercontent.com/ТВОЙ_USERNAME/vector-hub/main/Strategies"
@@ -480,7 +480,7 @@ local function Apply3dRendering()
     if Globals.Disable3DRendering then
         if PlayerGui and not gui then
             gui = Instance.new("ScreenGui")
-            gui.Name = "ADS_BlackScreen"
+            gui.Name = "Vector_BlackScreen"
             gui.IgnoreGuiInset = true
             gui.ResetOnSpawn = false
             gui.DisplayOrder = -1000
@@ -510,7 +510,7 @@ Apply3dRendering()
 
 local function GetStratFile()
     local name = getgenv().ActiveStrategy or Globals.ActiveStrategy or "default"
-    return "ADS_LastStrat_" .. tostring(name) .. ".lua"
+    return "Vector_LastStrat_" .. tostring(name) .. ".lua"
 end
 
 local isTagChangerRunning = false
@@ -1835,8 +1835,7 @@ Window = Library:Window({
     Title = "Vector",
     Desc = "Без ключей, без заморочек. Vector.",
     Theme = "Default",
-    DiscordLink = "",
-    Icon = ,
+    DiscordLink = "https://discord.gg/jEh6Mns8Sa",
     Config = {
         Keybind = Enum.KeyCode.LeftControl,
         Size = UDim2.new(0, 680, 0, 420)
@@ -1845,7 +1844,7 @@ Window = Library:Window({
 
 Window:Notify({
     Title = "Vector",
-    Desc = "This is fully keyless, but please join our Discord to stay updated on new features and scripts! https://discord.gg/getcore",
+    Desc = "Made by: Vector. Key-less system for everything, no bugs or something.",
     Time = 5,
     Type = "normal"
 })
@@ -1858,7 +1857,7 @@ task.spawn(function()
             if not inGroup then
                 Window:Notify({
                     Title = "Warning",
-                    Desc = "Please consider joining the Paradoxum Group. Otherwise, strategies may not work for you.",
+                    Desc = "Зайди в группу Paradoxum Games (разрабов TDS). Это даст дополнительных 100$ на старте.",
                     Time = 25,
                     Type = "error"
                 })
@@ -2278,6 +2277,79 @@ end
 
 Window:Line()
 
+local AutoStrat = Window:Tab({Title = "Auto-Strat", Icon = "play"}) do
+
+    AutoStrat:Section({Title = "Strategy Selector"})
+
+    local stratNames = {}
+    for name in pairs(AVAILABLE_STRATS) do
+        table.insert(stratNames, name)
+    end
+    table.sort(stratNames)
+    if #stratNames == 0 then stratNames = {"None"} end
+
+    local SelectedStrat = stratNames[1]
+
+    AutoStrat:Dropdown({
+        Title = "Strategy:",
+        List = stratNames,
+        Value = SelectedStrat,
+        Callback = function(c)
+            SelectedStrat = c
+        end
+    })
+
+    AutoStrat:Button({
+        Title = "▶ Start Strategy",
+        Desc = "Запускает выбранную стратегию",
+        Callback = function()
+            if not SelectedStrat or SelectedStrat == "None" then
+                Window:Notify({Title = "Auto-Strat", Desc = "Выбери стратегию", Time = 3, Type = "error"})
+                return
+            end
+            StartStrategy(SelectedStrat)
+        end
+    })
+
+    AutoStrat:Button({
+        Title = "■ Stop Strategy",
+        Desc = "Останавливает текущую стратегию",
+        Callback = function()
+            StopStrategy()
+            Window:Notify({Title = "Auto-Strat", Desc = "Остановлено", Time = 3, Type = "normal"})
+        end
+    })
+
+    AutoStrat:Button({
+        Title = "⟳ Refresh All Strategies",
+        Desc = "Скачивает свежие версии с GitHub",
+        Callback = function()
+            for name in pairs(AVAILABLE_STRATS) do
+                RefreshStrategy(name)
+            end
+            Window:Notify({Title = "Auto-Strat", Desc = "Все стратегии обновлены", Time = 3, Type = "normal"})
+        end
+    })
+
+    AutoStrat:Section({Title = "Status"})
+
+    local StatusLabel = AutoStrat:Label({Title = "Idle", Desc = ""})
+
+    task.spawn(function()
+        while task.wait(1) do
+            pcall(function()
+                if CurrentStratName then
+                    StatusLabel:SetTitle("Running: " .. CurrentStratName)
+                else
+                    StatusLabel:SetTitle("Idle")
+                end
+            end)
+        end
+    end)
+end
+
+Window:Line()
+
 local Interactive = Window:Tab({Title = "Interactive", Icon = "mouse-pointer-click"}) do
 
     Interactive:Section({Title = "Tower Controls"})
@@ -2344,7 +2416,7 @@ local Interactive = Window:Tab({Title = "Interactive", Icon = "mouse-pointer-cli
 
             if StackEnabled then
                 Window:Notify({
-                    Title = "ADS",
+                    Title = "Vector",
                     Desc = "Make sure not to equip the tower, only select it and then place where you want to!",
                     Time = 5,
                     Type = "normal"
@@ -4623,7 +4695,7 @@ local function strategyRecordingSetup()
                     local actionString = string.format("TDS:%s(%s)", methodName, table.concat(stringifiedArguments, ", "))
                     table.insert(executed_actions, actionString)
 
-                    local strategyFileContent = "local TDS = shared.TDSTable or loadstring(game:HttpGet(\"https://raw.githubusercontent.com/DuxiiT/auto-strat/refs/heads/main/Library.lua\"))()\n\n"
+                    local strategyFileContent = "local TDS = shared.TDSTable or loadstring(game:HttpGet(\"https://raw.githubusercontent.com/VectorDevTeam1/vector-hub/refs/heads/main/Library.lua\"))()\n\n"
                     strategyFileContent = strategyFileContent .. table.concat(executed_actions, "\n")
                     writefile(GetStratFile(), strategyFileContent)
                 end
@@ -4633,8 +4705,6 @@ local function strategyRecordingSetup()
         end
     end
 end
-
-strategyRecordingSetup()
 
 strategyRecordingSetup()
 
@@ -4703,7 +4773,7 @@ local function StartStrategy(name)
     getgenv().ActiveStrategy = name
     SetSetting("ActiveStrategy", name)
 
-    local dest = "ADS_LastStrat_" .. name .. ".lua"
+    local dest = "Vector_LastStrat_" .. name .. ".lua"
     pcall(writefile, dest, code)
 
     CurrentStratName = name
