@@ -4661,10 +4661,6 @@ if GameState == "LOBBY" and Globals.AutoRejoin and isfile(GetStratFile()) then
     pcall(delfile, GetStratFile())
 end
 
-if GameState == "LOBBY" and Globals.AutoRejoin and isfile(GetStratFile()) then
-    pcall(delfile, GetStratFile())
-end
-
 if GameState == "GAME" and Globals.AutoRejoin and isfile(GetStratFile()) then
     local stratContent = pcall(readfile, GetStratFile()) and readfile(GetStratFile()) or ""
     if stratContent:find(":Loadout%(") then
