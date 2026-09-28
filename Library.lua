@@ -124,6 +124,7 @@ local AVAILABLE_STRATS = {
     -- Название_стратегии = URL_файла
     ["Fallen"]   = STRAT_BASE_URL .. "/Fallen.lua",
     ["Hardcore"] = STRAT_BASE_URL .. "/Hardcore.lua",
+    ["FastCoin"] = STRAT_BASE_URL .. "/FastCoin.lua",
     -- Добавляй новые по аналогии:
     -- ["Badlands"] = STRAT_BASE_URL .. "/Badlands.lua",
 }
