@@ -117,7 +117,7 @@ local RemoteEvent = ReplicatedStorage:WaitForChild("RemoteEvent")
 local FileName = "Vector_Config.json"
 -- // === AUTO-STRAT CONFIG ======================================
 -- Замени на СВОЙ GitHub-репозиторий
-local STRAT_BASE_URL = "https://raw.githubusercontent.com/ТВОЙ_USERNAME/vector-hub/main/Strategies"
+local STRAT_BASE_URL = "https://raw.githubusercontent.com/VectorDevTeam1/vector-hub/refs/heads/main/Strategies"
 local STRAT_DIR      = "Vector_Strategies"
 
 local AVAILABLE_STRATS = {
