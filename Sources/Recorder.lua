@@ -280,7 +280,12 @@ close_btn.MouseButton1Click:Connect(function()
     screen_gui:Destroy()
 end)
 
-local towers_folder = workspace:WaitForChild("Towers")
+local towers_folder = workspace:WaitForChild("Towers", 10)
+
+if not towers_folder then
+    warn("[Recorder] Towers not found — recorder disabled until reload")
+    return true
+end
 
 towers_folder.ChildAdded:Connect(function(tower)
     if not _G.record_strat then return end
@@ -332,3 +337,6 @@ end)
 add_log("Recorder Ready")
 
 return true
+
+
+end
