@@ -337,6 +337,3 @@ end)
 add_log("Recorder Ready")
 
 return true
-
-
-end
