@@ -3014,14 +3014,7 @@ end
 Window:Line()
 
 local RecorderInit = loadstring(game:HttpGet("https://raw.githubusercontent.com/VectorDevTeam1/vector-hub/refs/heads/main/Sources/Recorder.lua"))()
-RecorderInit({
-    Window = Window,
-    ReplicatedStorage = ReplicatedStorage,
-    LocalPlayer = LocalPlayer,
-    HttpService = HttpService,
-    GameState = GameState,
-    workspace = workspace
-})
+
 
 Window:Line()
 
