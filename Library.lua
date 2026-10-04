@@ -1795,6 +1795,99 @@ if GameState == "GAME" then
     HookPlacementSystem()
 end
 
+-- // === AUTO-STRAT CORE ========================================  ← НАЧАЛО ВСТАВКИ
+
+local CurrentStratThread = nil
+local CurrentStratName   = nil
+
+local function EnsureFolder(path)
+    if not isfolder(path) then pcall(makefolder, path) end
+end
+
+local function DownloadFile(url, path)
+    local ok, data = pcall(game.HttpGet, game, url)
+    if ok and data and #data > 0 then
+        pcall(writefile, path, data)
+        return true
+    end
+    return false
+end
+
+local function EnsureStrategiesLocal()
+    EnsureFolder(STRAT_DIR)
+    for name, url in pairs(AVAILABLE_STRATS) do
+        local path = STRAT_DIR .. "/" .. name .. ".lua"
+        if not isfile(path) then
+            DownloadFile(url, path)
+        end
+    end
+end
+
+local function RefreshStrategy(name)
+    local url = AVAILABLE_STRATS[name]
+    if not url then return false end
+    return DownloadFile(url, STRAT_DIR .. "/" .. name .. ".lua")
+end
+
+local function GetStrategyCode(name)
+    local path = STRAT_DIR .. "/" .. name .. ".lua"
+    if not isfile(path) then return nil end
+    local ok, code = pcall(readfile, path)
+    if ok and code then return code end
+    return nil
+end
+
+local function StopStrategy()
+    if CurrentStratThread then
+        pcall(task.cancel, CurrentStratThread)
+        CurrentStratThread = nil
+    end
+    CurrentStratName = nil
+end
+
+local function StartStrategy(name)
+    StopStrategy()
+
+    local code = GetStrategyCode(name)
+    if not code then
+        if Window then
+            Window:Notify({Title = "Auto-Strat", Desc = "Стратегия не найдена: " .. name, Time = 5, Type = "error"})
+        end
+        return
+    end
+
+    Globals.ActiveStrategy = name
+    getgenv().ActiveStrategy = name
+    SetSetting("ActiveStrategy", name)
+
+    local dest = "Vector_LastStrat_" .. name .. ".lua"
+    pcall(writefile, dest, code)
+
+    CurrentStratName = name
+    if Window then
+        Window:Notify({Title = "Auto-Strat", Desc = "Запуск: " .. name, Time = 4, Type = "normal"})
+    end
+
+    CurrentStratThread = task.spawn(function()
+        local fn, err = loadstring(code)
+        if not fn then
+            if Window then
+                Window:Notify({Title = "Auto-Strat", Desc = "Syntax error: " .. tostring(err), Time = 10, Type = "error"})
+            end
+            return
+        end
+        local ok, runErr = pcall(fn)
+        if not ok and Logger then
+            Logger:Log("Strategy error: " .. tostring(runErr))
+        end
+        CurrentStratThread = nil
+        CurrentStratName = nil
+    end)
+end
+
+-- Скачиваем все стратегии при первом запуске
+EnsureStrategiesLocal()
+
 -- // ui
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/VectorDevTeam1/vector-hub/refs/heads/main/Sources/UI.lua"))()
 
@@ -4564,98 +4657,6 @@ end
 
 strategyRecordingSetup()
 
--- // === AUTO-STRAT CORE ========================================  ← НАЧАЛО ВСТАВКИ
-
-local CurrentStratThread = nil
-local CurrentStratName   = nil
-
-local function EnsureFolder(path)
-    if not isfolder(path) then pcall(makefolder, path) end
-end
-
-local function DownloadFile(url, path)
-    local ok, data = pcall(game.HttpGet, game, url)
-    if ok and data and #data > 0 then
-        pcall(writefile, path, data)
-        return true
-    end
-    return false
-end
-
-local function EnsureStrategiesLocal()
-    EnsureFolder(STRAT_DIR)
-    for name, url in pairs(AVAILABLE_STRATS) do
-        local path = STRAT_DIR .. "/" .. name .. ".lua"
-        if not isfile(path) then
-            DownloadFile(url, path)
-        end
-    end
-end
-
-local function RefreshStrategy(name)
-    local url = AVAILABLE_STRATS[name]
-    if not url then return false end
-    return DownloadFile(url, STRAT_DIR .. "/" .. name .. ".lua")
-end
-
-local function GetStrategyCode(name)
-    local path = STRAT_DIR .. "/" .. name .. ".lua"
-    if not isfile(path) then return nil end
-    local ok, code = pcall(readfile, path)
-    if ok and code then return code end
-    return nil
-end
-
-local function StopStrategy()
-    if CurrentStratThread then
-        pcall(task.cancel, CurrentStratThread)
-        CurrentStratThread = nil
-    end
-    CurrentStratName = nil
-end
-
-local function StartStrategy(name)
-    StopStrategy()
-
-    local code = GetStrategyCode(name)
-    if not code then
-        if Window then
-            Window:Notify({Title = "Auto-Strat", Desc = "Стратегия не найдена: " .. name, Time = 5, Type = "error"})
-        end
-        return
-    end
-
-    Globals.ActiveStrategy = name
-    getgenv().ActiveStrategy = name
-    SetSetting("ActiveStrategy", name)
-
-    local dest = "Vector_LastStrat_" .. name .. ".lua"
-    pcall(writefile, dest, code)
-
-    CurrentStratName = name
-    if Window then
-        Window:Notify({Title = "Auto-Strat", Desc = "Запуск: " .. name, Time = 4, Type = "normal"})
-    end
-
-    CurrentStratThread = task.spawn(function()
-        local fn, err = loadstring(code)
-        if not fn then
-            if Window then
-                Window:Notify({Title = "Auto-Strat", Desc = "Syntax error: " .. tostring(err), Time = 10, Type = "error"})
-            end
-            return
-        end
-        local ok, runErr = pcall(fn)
-        if not ok and Logger then
-            Logger:Log("Strategy error: " .. tostring(runErr))
-        end
-        CurrentStratThread = nil
-        CurrentStratName = nil
-    end)
-end
-
--- Скачиваем все стратегии при первом запуске
-EnsureStrategiesLocal()
 
 -- // === AUTO-STRAT CORE (END) ==================================  ← КОНЕЦ ВСТАВКИ
 
