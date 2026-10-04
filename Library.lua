@@ -2196,13 +2196,23 @@ local AutoStrat = Window:Tab({Title = "Auto-Strat", Icon = "play"}) do
     AutoStrat:Button({
         Title = "▶ Start Strategy",
         Desc = "Запускает выбранную стратегию",
-        Callback = function()
-            if not SelectedStrat or SelectedStrat == "None" then
-                Window:Notify({Title = "Auto-Strat", Desc = "Выбери стратегию", Time = 3, Type = "error"})
-                return
-            end
-            StartStrategy(SelectedStrat)
+    Callback = function()
+        print("[UI] ===== START BUTTON CLICKED =====")
+        print("[UI] SelectedStrat:", SelectedStrat)
+        print("[UI] StartStrategy type:", type(StartStrategy))
+        
+        if not SelectedStrat or SelectedStrat == "None" then
+            print("[UI] No strategy selected")
+            Window:Notify({Title = "Auto-Strat", Desc = "Выбери стратегию", Time = 3, Type = "error"})
+            return
         end
+        
+        print("[UI] Calling StartStrategy...")
+        local ok, err = pcall(function()
+            StartStrategy(SelectedStrat)
+        end)
+        print("[UI] Result:", ok, err or "OK")
+    end
     })
 
     AutoStrat:Button({
