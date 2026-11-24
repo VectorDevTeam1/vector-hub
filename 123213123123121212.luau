@@ -5,7 +5,6 @@ local HttpService = cloneref(game:GetService("HttpService"))
 
 local Directory = "solixhub"
 local Folders = {"/Configs", "/Themes", "/Fonts", "/Luas", "/Assets", "/Images", "/polsec"}
-
 local GameId = tostring(game.GameId)
 
 local FontCatalog = {
@@ -17,55 +16,10 @@ local FontCatalog = {
 }
 
 local GameList = {
-    -- Normal Games
-    ["10771997908"] = { Id = "bab92ead754b2d2e" }, -- +1 Spider Arm
-    ["578392296"]   = { Id = "9c36af272e9edcab" }, -- ABA
-    ["10770933473"] = { Id = "570960567ae9ee68" }, -- Anime Eyes
-    ["10512942223"] = { Id = "578395010f8c4716" }, -- Anime Zero
-    ["4658598196"]  = { Id = "086646721d0da59e" }, -- Attack on Titan Revolution
-    ["4777817887"]  = { Id = "cf1e81c5fb14d3bc" }, -- Blade Ball
-    ["994732206"]   = { Id = "ce2e40f0bc2b1720" }, -- Blox Fruits
-    ["1946714362"]  = { Id = "2f231342cca70549" }, -- Bloodlines
-    ["10769957062"] = { Id = "f7a5694f13d13f89" }, -- Bug Evolution
-    ["10767386157"] = { Id = "22068f1924bfbd48" }, -- Chop A Forest
-    ["10767634248"] = { Id = "41dd482b4e67a744" }, -- Firefighting Sim
-    ["648454481"]   = { Id = "a873ec9f40a25c5c" }, -- Grand Piece Online
-    ["1451439645"]  = { Id = "0175e216221387f8" }, -- King Legacy
-    ["66654135"]    = { Id = "e45bba6c0dc08fad" }, -- Murder Mystery 2
-    ["10035204815"] = { Id = "85a577643f806078" }, -- Ride A Pet
-    ["6035872082"]  = { Id = "9d318b57c43ebd9d" }, -- Rivals
-    ["7219654364"]  = { Id = "b056f96b43a4a4e2" }, -- Sheriff VS Murderer
-    ["1511883870"]  = { Id = "5ac16739ff2ef735" }, -- Shindo Life
-    ["5595353122"]  = { Id = "d7305ba1bbb3bd7b" }, -- Slayers 2
-    ["8172250815"]  = { Id = "7c60f067f2d65107" }, -- STAND OUT
-    ["10563114921"] = { Id = "d3b0a2eaf4a1522a" }, -- Steal An Egg
-    ["7174773198"]  = { Id = "1a0dbcb0cbb0b955" }, -- Vox Seas
-
-    -- Universal Games
-    ["9534705677"]  = { Id = "52eedbdc867c3387" }, -- Arcade
-    ["10138624079"] = { Id = "52eedbdc867c3387" }, -- Arena
-    ["111958650"]   = { Id = "52eedbdc867c3387" }, -- Arsenal
-    ["6765805766"]  = { Id = "52eedbdc867c3387" }, -- BlockSpin
-    ["5000084391"]  = { Id = "52eedbdc867c3387" }, -- Decay
-    ["6993600665"]  = { Id = "52eedbdc867c3387" }, -- Defusal
-    ["10057403337"] = { Id = "52eedbdc867c3387" }, -- Deagle Arena
-    ["4750561026"]  = { Id = "52eedbdc867c3387" }, -- Cold War
-    ["6583326485"]  = { Id = "52eedbdc867c3387" }, -- Ground War
-    ["5091490171"]  = { Id = "52eedbdc867c3387" }, -- Jailbird
-    ["73885730"]    = { Id = "52eedbdc867c3387" }, -- Prison Life
-    ["10767708641"] = { Id = "52eedbdc867c3387" }, -- Pistol Duels
-    ["3021395192"]  = { Id = "52eedbdc867c3387" }, -- RiotFall
-    ["9294074907"]  = { Id = "52eedbdc867c3387" }, -- [FPS] One Tap
-    ["1281592938"]  = { Id = "52eedbdc867c3387" }, -- ENTRENCHED
-    ["8468366390"]  = { Id = "52eedbdc867c3387" }, -- Infected Lands
-    ["5995470825"]  = { Id = "52eedbdc867c3387" }, -- Hypershot
-    ["10769850944"] = { Id = "52eedbdc867c3387" }, -- KOBALT / DROPZONE
-    ["10769552054"] = { Id = "52eedbdc867c3387" }, -- Urban Reload
-    ["10750223358"] = { Id = "52eedbdc867c3387" }, -- ZHD
-    ["504035427"]   = { Id = "52eedbdc867c3387" }, -- Zombie Attack
-    ["7633926880"]  = { Id = "52eedbdc867c3387" }, -- BloxStrike
+    -- (вставь сюда весь GameList из своего файла — я его не дублирую)
 }
 
+local SdkUrl = "https://api.polsec.net/sdk"
 local LoaderBaseUrl = "https://api.polsec.net/loader"
 local Config = {
     KeyFile = "solixhub/polsec/license.key.json",
@@ -106,7 +60,7 @@ end
 
 local GameConfig = GameList[GameId]
 if not GameConfig then
-    warn("[Solix Hub] This game is not supported: " .. GameId)
+    warn("[Solix Hub] Game not supported: " .. GameId)
     return
 end
 
@@ -115,7 +69,6 @@ task.spawn(function()
     for k, v in pairs(FontCatalog) do pcall(CacheFont, k, v) end
 end)
 
--- Пытаемся взять уже сохранённый ключ (без UI)
 local function ReadJson(path)
     if not isfile or not readfile or not isfile(path) then return nil end
     local ok, src = pcall(readfile, path)
@@ -125,28 +78,59 @@ local function ReadJson(path)
     return data
 end
 
+-- 1. Загружаем SDK (это ОБЯЗАТЕЛЬНО — он ставит хук HttpGet)
+local sdkChunk, sdkErr = loadstring(game:HttpGet(SdkUrl))
+assert(sdkChunk, "SDK load failed: " .. tostring(sdkErr))
+local SDK = sdkChunk()
+assert(type(SDK) == "table" and type(SDK.check_key) == "function", "SDK unavailable")
+SDK.script_id = GameConfig.Id
+
+-- 2. Достаём ключ: getgenv -> script_key -> файл
 local key = getgenv().script_key or script_key
 if type(key) ~= "string" or key == "" or key == "trial" or key == "trail" then
     local saved = ReadJson(Config.KeyFile)
     key = saved and saved.key or ""
 end
+if key == "" then
+    warn("[Solix Hub] No key. Set getgenv().script_key or place key in " .. Config.KeyFile)
+    return
+end
 
-script_key                  = key
-getgenv().script_key        = key
-getgenv().polsec_script_id  = GameConfig.Id
+-- 3. Валидация (ставит хук + проверяет ключ на сервере)
+local ok, result = pcall(function() return SDK.check_key(key) end)
+if not ok or type(result) ~= "table" then
+    warn("[Solix Hub] Key check network error")
+    return
+end
+if result.status ~= "key_valid" then
+    warn("[Solix Hub] Key invalid: " .. tostring(result.status) ..
+         " | " .. tostring(result.message))
+    return
+end
 
+-- 4. Глобалы, которые ждёт чит
+script_key                 = key
+getgenv().script_key       = key
+getgenv().key               = key
+getgenv().polsec_script_id = GameConfig.Id
+local user = type(result.user) == "table" and result.user or {}
+getgenv().PolSec_Expiry    = user.key_expires
+getgenv().PolSec_UserId    = user.discord_id
+getgenv().key_expire       = user.key_expires or 0
+getgenv().key_note         = user.note or ""
+
+-- 5. Тянем сам чит (SDK-хук добавит auth-заголовок)
 local ProjectId = getgenv().PolSec_ProjectId
 if type(ProjectId) ~= "string" or ProjectId == "" then
     ProjectId = Config.ProjectId
 end
 
--- Единственный оставшийся loadstring:
 local url = LoaderBaseUrl .. "/" .. ProjectId .. "/" .. GameConfig.Id
 print("[Solix Hub] GET " .. url)
 
 local src = game:HttpGet(url)
 if type(src) ~= "string" or #src < 32 then
-    warn("[Solix Hub] Loader returned empty body — server likely rejected the key.")
+    warn("[Solix Hub] Loader returned empty body — key rejected server-side")
     return
 end
 
